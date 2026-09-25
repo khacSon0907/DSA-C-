@@ -1,0 +1,15 @@
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\bin\Debug\net9.0\BinarySearch.exe
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\bin\Debug\net9.0\BinarySearch.deps.json
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\bin\Debug\net9.0\BinarySearch.runtimeconfig.json
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\bin\Debug\net9.0\BinarySearch.dll
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\bin\Debug\net9.0\BinarySearch.pdb
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\obj\Debug\net9.0\BinarySearch.GeneratedMSBuildEditorConfig.editorconfig
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\obj\Debug\net9.0\BinarySearch.AssemblyInfoInputs.cache
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\obj\Debug\net9.0\BinarySearch.AssemblyInfo.cs
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\obj\Debug\net9.0\BinarySearch.csproj.CoreCompileInputs.cache
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\obj\Debug\net9.0\BinarySearch.sourcelink.json
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\obj\Debug\net9.0\BinarySearch.dll
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\obj\Debug\net9.0\refint\BinarySearch.dll
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\obj\Debug\net9.0\BinarySearch.pdb
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\obj\Debug\net9.0\BinarySearch.genruntimeconfig.cache
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BinarySearch\obj\Debug\net9.0\ref\BinarySearch.dll
