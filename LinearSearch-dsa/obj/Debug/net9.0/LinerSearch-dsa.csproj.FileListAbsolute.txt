@@ -1,0 +1,14 @@
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\bin\Debug\net9.0\LinerSearch-dsa.exe
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\bin\Debug\net9.0\LinerSearch-dsa.deps.json
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\bin\Debug\net9.0\LinerSearch-dsa.runtimeconfig.json
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\bin\Debug\net9.0\LinerSearch-dsa.dll
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\bin\Debug\net9.0\LinerSearch-dsa.pdb
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\obj\Debug\net9.0\LinerSearch-dsa.GeneratedMSBuildEditorConfig.editorconfig
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\obj\Debug\net9.0\LinerSearch-dsa.AssemblyInfoInputs.cache
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\obj\Debug\net9.0\LinerSearch-dsa.AssemblyInfo.cs
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\obj\Debug\net9.0\LinerSearch-dsa.csproj.CoreCompileInputs.cache
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\obj\Debug\net9.0\LinerSearch-dsa.dll
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\obj\Debug\net9.0\refint\LinerSearch-dsa.dll
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\obj\Debug\net9.0\LinerSearch-dsa.pdb
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\obj\Debug\net9.0\LinerSearch-dsa.genruntimeconfig.cache
+D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinerSearch-dsa\obj\Debug\net9.0\ref\LinerSearch-dsa.dll
