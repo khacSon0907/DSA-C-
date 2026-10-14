@@ -5,7 +5,7 @@ namespace BinarySearch
 	{
 		public static void Main(string[] args)
 		{
-			Console.WriteLine(1/3);
+			
 		}
 	}
 }
