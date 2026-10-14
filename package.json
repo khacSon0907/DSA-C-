@@ -1,0 +1,21 @@
+{
+  "name": "dsa-visualizer",
+  "version": "1.0.0",
+  "description": "DSA Visualizer & Simulator deployed on Vercel",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "dsa",
+    "visualizer",
+    "algorithms",
+    "huflit",
+    "sorting",
+    "searching",
+    "linkedlist"
+  ],
+  "author": "HUFLIT Student",
+  "license": "MIT"
+}
