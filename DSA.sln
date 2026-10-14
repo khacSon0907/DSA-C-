@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubleSort", "BubleSort\Bubl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "linkedList", "linkedList", "{4600C0ED-7DD6-4515-A437-8AC2782DEEBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{F0827F12-4605-44BA-BF31-E91CF6975F60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkedList", "LinkedList\LinkedList.csproj", "{F0827F12-4605-44BA-BF31-E91CF6975F60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

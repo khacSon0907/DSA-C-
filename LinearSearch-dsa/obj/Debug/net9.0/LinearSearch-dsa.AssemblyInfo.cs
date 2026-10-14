@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LinearSearch-dsa")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+41f2c54e87dba23936c72fbacf34f45eaf343e76")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+14bc5f81bd3767e95aacd526154f55aeceb3cd32")]
 [assembly: System.Reflection.AssemblyProductAttribute("LinearSearch-dsa")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LinearSearch-dsa")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
