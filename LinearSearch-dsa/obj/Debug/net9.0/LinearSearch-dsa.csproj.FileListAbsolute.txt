@@ -12,3 +12,4 @@ D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinearSearch-dsa\obj\Debug\net9.0\refi
 D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinearSearch-dsa\obj\Debug\net9.0\LinearSearch-dsa.pdb
 D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinearSearch-dsa\obj\Debug\net9.0\LinearSearch-dsa.genruntimeconfig.cache
 D:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinearSearch-dsa\obj\Debug\net9.0\ref\LinearSearch-dsa.dll
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\LinearSearch-dsa\obj\Debug\net9.0\LinearSearch-dsa.sourcelink.json

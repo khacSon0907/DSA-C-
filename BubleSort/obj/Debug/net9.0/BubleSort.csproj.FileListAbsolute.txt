@@ -1,0 +1,15 @@
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\bin\Debug\net9.0\BubleSort.exe
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\bin\Debug\net9.0\BubleSort.deps.json
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\bin\Debug\net9.0\BubleSort.runtimeconfig.json
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\bin\Debug\net9.0\BubleSort.dll
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\bin\Debug\net9.0\BubleSort.pdb
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\obj\Debug\net9.0\BubleSort.GeneratedMSBuildEditorConfig.editorconfig
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\obj\Debug\net9.0\BubleSort.AssemblyInfoInputs.cache
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\obj\Debug\net9.0\BubleSort.AssemblyInfo.cs
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\obj\Debug\net9.0\BubleSort.csproj.CoreCompileInputs.cache
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\obj\Debug\net9.0\BubleSort.sourcelink.json
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\obj\Debug\net9.0\BubleSort.dll
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\obj\Debug\net9.0\refint\BubleSort.dll
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\obj\Debug\net9.0\BubleSort.pdb
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\obj\Debug\net9.0\BubleSort.genruntimeconfig.cache
+d:\STUDY-HUFLIT-3-1\CAUTRUCDULIEU\DSA\DSA\BubleSort\obj\Debug\net9.0\ref\BubleSort.dll

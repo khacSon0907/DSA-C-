@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mô Phỏng Trực Quan Cấu Trúc Dữ Liệu & Giải Thuật (DSA Visualizer)</title>
+  <meta name="description" content="Ứng dụng mô phỏng trực quan các thuật toán DSA: Tìm kiếm tuyến tính, Tìm kiếm nhị phân, Sắp xếp nổi bọt và Danh sách liên kết.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #090d16;
+      --bg-card: rgba(17, 24, 39, 0.75);
+      --bg-card-hover: rgba(31, 41, 55, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(99, 102, 241, 0.6);
+      
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      
+      --cyan: #06b6d4;
+      --cyan-glow: rgba(6, 182, 212, 0.25);
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.25);
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+      
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.5) 0px, transparent 100%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Navigation */
+    header {
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.85rem 2rem;
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.15rem;
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .logo-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(to right, #fff, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .logo-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Algorithm Navigation Tabs */
+    .algo-tabs {
+      display: flex;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 4px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      gap: 4px;
+    }
+
+    .algo-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .algo-tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .algo-tab-btn.active {
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Info Bar & Complexity Banner */
+    .algo-header-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-xl);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .algo-info h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .algo-info p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 4px;
+      max-width: 750px;
+      line-height: 1.5;
+    }
+
+    .complexity-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .badge-label {
+      color: var(--text-dim);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .badge-value {
+      color: var(--cyan);
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* Control Panel */
+    .controls-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-xl);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .input-field {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      padding: 9px 14px;
+      outline: none;
+      transition: all 0.2s;
+      width: 100%;
+    }
+
+    .input-field:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .actions-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      color: #fff;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px var(--primary-glow);
+    }
+
+    .btn-emerald {
+      background: linear-gradient(135deg, var(--emerald), #059669);
+      color: #fff;
+      box-shadow: 0 4px 12px var(--emerald-glow);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .speed-slider {
+      -webkit-appearance: none;
+      width: 110px;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+
+    .speed-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--primary);
+    }
+
+    /* Simulation & Stage Section */
+    .stage-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .stage-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stage-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 440px;
+      position: relative;
+    }
+
+    .stage-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .stage-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text-dim);
+    }
+
+    .status-dot.active {
+      background: var(--emerald);
+      box-shadow: 0 0 10px var(--emerald);
+    }
+
+    .status-dot.searching {
+      background: var(--amber);
+      box-shadow: 0 0 10px var(--amber);
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { opacity: 0.5; }
+      to { opacity: 1; }
+    }
+
+    /* Visualization Canvas */
+    .canvas-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: auto;
+      padding: 1rem 0;
+      min-height: 260px;
+    }
+
+    /* Array Elements Style */
+    .array-wrapper {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      padding: 30px 10px 40px 10px;
+    }
+
+    .array-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .array-box {
+      width: 58px;
+      height: 62px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: #fff;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Bar mode for Bubble Sort */
+    .array-bar {
+      width: 48px;
+      background: linear-gradient(180deg, var(--primary-light), var(--primary));
+      border-radius: var(--radius-md) var(--radius-md) 4px 4px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    }
+
+    .array-index {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    /* Pointer indicators (Left, Mid, Right, Current) */
+    .pointer-tag {
+      position: absolute;
+      top: -28px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      transition: all 0.25s ease;
+    }
+
+    .pointer-l {
+      background: var(--cyan);
+      color: #000;
+      box-shadow: 0 0 10px var(--cyan);
+    }
+
+    .pointer-m {
+      background: var(--amber);
+      color: #000;
+      box-shadow: 0 0 10px var(--amber);
+    }
+
+    .pointer-r {
+      background: var(--rose);
+      color: #fff;
+      box-shadow: 0 0 10px var(--rose);
+    }
+
+    .pointer-curr {
+      background: var(--primary-light);
+      color: #000;
+      box-shadow: 0 0 10px var(--primary-light);
+    }
+
+    /* Element Highlight States */
+    .array-box.comparing, .array-bar.comparing {
+      background: rgba(245, 158, 11, 0.25) !important;
+      border-color: var(--amber) !important;
+      color: #fbbf24 !important;
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.4) !important;
+      transform: translateY(-8px) scale(1.05);
+    }
+
+    .array-box.matched, .array-bar.matched {
+      background: rgba(16, 185, 129, 0.3) !important;
+      border-color: var(--emerald) !important;
+      color: #34d399 !important;
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.6) !important;
+      transform: translateY(-12px) scale(1.1);
+    }
+
+    .array-box.mismatch {
+      background: rgba(244, 63, 94, 0.15) !important;
+      border-color: rgba(244, 63, 94, 0.5) !important;
+      color: #fda4af !important;
+      opacity: 0.6;
+    }
+
+    .array-box.eliminated, .array-bar.eliminated {
+      opacity: 0.25;
+      filter: grayscale(80%);
+      transform: scale(0.92);
+    }
+
+    .array-box.sorted, .array-bar.sorted {
+      background: rgba(16, 185, 129, 0.2) !important;
+      border-color: var(--emerald) !important;
+      color: #6ee7b7 !important;
+    }
+
+    /* Linked List Visualization */
+    .linked-list-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+      padding: 30px 10px;
+    }
+
+    .ll-node-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .ll-node {
+      display: flex;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      background: rgba(30, 41, 59, 0.9);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      transition: all 0.3s;
+    }
+
+    .ll-node-data {
+      padding: 14px 18px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 50px;
+    }
+
+    .ll-node-next {
+      background: rgba(15, 23, 42, 0.7);
+      padding: 14px 12px;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ll-arrow {
+      color: var(--primary-light);
+      font-size: 1.4rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      animation: arrowFloat 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes arrowFloat {
+      from { transform: translateX(0); }
+      to { transform: translateX(3px); }
+    }
+
+    .ll-null {
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px dashed var(--rose);
+      color: var(--rose);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+    }
+
+    .ll-node.active-node {
+      border-color: var(--amber);
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
+      transform: translateY(-8px);
+    }
+
+    .ll-node.found-node {
+      border-color: var(--emerald);
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
+      transform: translateY(-8px);
+    }
+
+    /* Right Sidebar: Execution Details & Code */
+    .sidebar-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .panel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-xl);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .panel-card h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .explanation-box {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+      min-height: 100px;
+    }
+
+    .explanation-box strong {
+      color: var(--primary-light);
+    }
+
+    .explanation-step-num {
+      display: inline-block;
+      background: rgba(99, 102, 241, 0.2);
+      color: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    /* Code View */
+    .code-container {
+      background: #060911;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      overflow-x: auto;
+      max-height: 250px;
+    }
+
+    .code-line {
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #94a3b8;
+      white-space: pre;
+      line-height: 1.5;
+    }
+
+    .code-line.active {
+      background: rgba(99, 102, 241, 0.3);
+      color: #fff;
+      font-weight: 600;
+      border-left: 3px solid var(--primary-light);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      background: rgba(11, 15, 25, 0.7);
+      padding: 1.25rem 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: auto;
+    }
+
+    footer a {
+      color: var(--primary-light);
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="header-inner">
+      <div class="logo-container">
+        <div class="logo-badge">⚡</div>
+        <div>
+          <div class="logo-title">DSA Visualizer & Simulator</div>
+          <div class="logo-subtitle">Mô Phỏng Trực Quan Cấu Trúc Dữ Liệu & Giải Thuật • HUFLIT</div>
+        </div>
+      </div>
+
+      <nav class="algo-tabs" role="tablist">
+        <button class="algo-tab-btn active" id="tab-linear" onclick="switchAlgorithm('linear')" role="tab">
+          <span>🔍</span> Linear Search
+        </button>
+        <button class="algo-tab-btn" id="tab-binary" onclick="switchAlgorithm('binary')" role="tab">
+          <span>⚡</span> Binary Search
+        </button>
+        <button class="algo-tab-btn" id="tab-bubble" onclick="switchAlgorithm('bubble')" role="tab">
+          <span>🫧</span> Bubble Sort
+        </button>
+        <button class="algo-tab-btn" id="tab-linkedlist" onclick="switchAlgorithm('linkedlist')" role="tab">
+          <span>🔗</span> Linked List
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Algorithm Header & Complexity Card -->
+    <section class="algo-header-card" aria-label="Thông tin thuật toán">
+      <div class="algo-info">
+        <h2 id="algo-title">Tìm kiếm tuyến tính (Linear Search)</h2>
+        <p id="algo-desc">
+          Duyệt qua từng phần tử của mảng từ đầu đến cuối một cách tuần tự, so sánh với giá trị cần tìm cho đến khi gặp phần tử khớp hoặc hết mảng.
+        </p>
+      </div>
+
+      <div class="complexity-badges">
+        <div class="badge">
+          <span class="badge-label">Best Time</span>
+          <span class="badge-value" id="c-best">O(1)</span>
+        </div>
+        <div class="badge">
+          <span class="badge-label">Avg Time</span>
+          <span class="badge-value" id="c-avg">O(n)</span>
+        </div>
+        <div class="badge">
+          <span class="badge-label">Worst Time</span>
+          <span class="badge-value" id="c-worst">O(n)</span>
+        </div>
+        <div class="badge">
+          <span class="badge-label">Space</span>
+          <span class="badge-value" id="c-space">O(1)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls Panel -->
+    <section class="controls-card" aria-label="Bảng điều khiển">
+      <!-- Input Controls (Dynamic based on selected algorithm) -->
+      <div id="controls-input-container" class="input-row">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Action Buttons & Speed -->
+      <div class="actions-row">
+        <div class="btn-group">
+          <button class="btn btn-primary" id="btn-play" onclick="handlePlayPause()">
+            <span id="play-icon">▶</span> <span id="play-text">Chạy mô phỏng</span>
+          </button>
+          <button class="btn btn-secondary" id="btn-step" onclick="handleStep()">
+            <span>⏭</span> Từng bước (Step)
+          </button>
+          <button class="btn btn-secondary" id="btn-reset" onclick="handleReset()">
+            <span>🔄</span> Đặt lại (Reset)
+          </button>
+          <button class="btn btn-secondary" id="btn-random" onclick="handleRandomize()">
+            <span>🎲</span> Mẫu ngẫu nhiên
+          </button>
+        </div>
+
+        <div class="speed-control">
+          <span>Tốc độ:</span>
+          <input type="range" class="speed-slider" id="speed-slider" min="100" max="1500" step="100" value="700" onchange="updateSpeed(this.value)">
+          <span id="speed-label" style="font-family: var(--font-mono); width: 45px;">700ms</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stage & Execution Grid -->
+    <div class="stage-layout">
+      <!-- Main Visual Stage -->
+      <section class="stage-card" aria-label="Khu vực trực quan hóa">
+        <div class="stage-header">
+          <div class="stage-title">
+            <span>✨</span> Khung biểu diễn trực quan
+          </div>
+          <div class="status-indicator">
+            <span class="status-dot" id="status-dot"></span>
+            <span id="status-text">Sẵn sàng</span>
+          </div>
+        </div>
+
+        <div class="canvas-container" id="canvas-container">
+          <!-- Elements dynamically drawn here -->
+        </div>
+      </section>
+
+      <!-- Sidebar Information & Code -->
+      <aside class="sidebar-panel">
+        <div class="panel-card">
+          <h3><span>💡</span> Diễn giải bước thực thi</h3>
+          <div class="explanation-box" id="explanation-box">
+            Nhấn <strong>"Chạy mô phỏng"</strong> hoặc <strong>"Từng bước (Step)"</strong> để quan sát quá trình thuật toán xử lý dữ liệu.
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <h3><span>💻</span> Mã nguồn (C# / Pseudocode)</h3>
+          <div class="code-container" id="code-container">
+            <!-- Code lines rendered here -->
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <p>DSA Visualizer & Simulator • Được xây dựng cho sinh viên HUFLIT nghiên cứu Cấu trúc dữ liệu & Giải thuật.</p>
+    <p style="margin-top: 4px; font-size: 0.8rem;">Hỗ trợ: C#, JavaScript, Thuật toán tìm kiếm, Sắp xếp & Danh sách liên kết.</p>
+  </footer>
+
+  <script>
+    /* =========================================================
+       STATE MANAGEMENT & GLOBAL VARIABLES
+       ========================================================= */
+    let currentAlgo = 'linear'; // 'linear' | 'binary' | 'bubble' | 'linkedlist'
+    let isRunning = false;
+    let isPaused = false;
+    let delayTime = 700;
+    let timerId = null;
+
+    // Data Models
+    let arrayData = [12, 28, 5, 44, 19, 73, 31, 8];
+    let targetValue = 19;
+    
+    // Linked list model: array of { id, value }
+    let linkedListData = [
+      { id: 1, value: 15 },
+      { id: 2, value: 42 },
+      { id: 3, value: 89 },
+      { id: 4, value: 24 }
+    ];
+    let nextNodeId = 5;
+
+    // Execution Step Generator & History
+    let stepGenerator = null;
+    let stepCount = 0;
+
+    /* Algorithm Metadata */
+    const ALGO_METADATA = {
+      linear: {
+        title: 'Tìm kiếm tuyến tính (Linear Search)',
+        desc: 'Thuật toán duyệt qua từng phần tử mảng từ đầu đến cuối một cách tuần tự và so sánh với giá trị cần tìm. Không yêu cầu mảng phải được sắp xếp trước.',
+        cBest: 'O(1)',
+        cAvg: 'O(n)',
+        cWorst: 'O(n)',
+        cSpace: 'O(1)',
+        code: [
+          'public int LinearSearch(int[] arr, int target) {',
+          '    for (int i = 0; i < arr.Length; i++) {',
+          '        if (arr[i] == target) {',
+          '            return i; // Tìm thấy tại vị trí i',
+          '        }',
+          '    }',
+          '    return -1; // Không tìm thấy trong mảng',
+          '}'
+        ]
+      },
+      binary: {
+        title: 'Tìm kiếm nhị phân (Binary Search)',
+        desc: 'Thuật toán tìm kiếm hiệu năng cao trên mảng đã được sắp xếp tăng dần. Liên tục chia đôi phạm vi tìm kiếm (Left, Mid, Right) sau mỗi bước so sánh.',
+        cBest: 'O(1)',
+        cAvg: 'O(log n)',
+        cWorst: 'O(log n)',
+        cSpace: 'O(1)',
+        code: [
+          'public int BinarySearch(int[] arr, int target) {',
+          '    int left = 0, right = arr.Length - 1;',
+          '    while (left <= right) {',
+          '        int mid = left + (right - left) / 2;',
+          '        if (arr[mid] == target) return mid;',
+          '        if (arr[mid] < target) left = mid + 1;',
+          '        else right = mid - 1;',
+          '    }',
+          '    return -1;',
+          '}'
+        ]
+      },
+      bubble: {
+        title: 'Sắp xếp nổi bọt (Bubble Sort)',
+        desc: 'Thuật toán duyệt qua mảng nhiều lượt, so sánh 2 phần tử liền kề và hoán đổi vị trí nếu sai thứ tự. Sau mỗi vòng, phần tử lớn nhất sẽ "nổi" về cuối.',
+        cBest: 'O(n)',
+        cAvg: 'O(n²)',
+        cWorst: 'O(n²)',
+        cSpace: 'O(1)',
+        code: [
+          'public void BubbleSort(int[] arr) {',
+          '    int n = arr.Length;',
+          '    for (int i = 0; i < n - 1; i++) {',
+          '        bool swapped = false;',
+          '        for (int j = 0; j < n - i - 1; j++) {',
+          '            if (arr[j] > arr[j + 1]) {',
+          '                Swap(ref arr[j], ref arr[j + 1]);',
+          '                swapped = true;',
+          '            }',
+          '        }',
+          '        if (!swapped) break;',
+          '    }',
+          '}'
+        ]
+      },
+      linkedlist: {
+        title: 'Danh sách liên kết đơn (Singly Linked List)',
+        desc: 'Cấu trúc dữ liệu tuyến tính gồm các Node chứa Data và liên kết Next trỏ đến phần tử kế tiếp. Cho phép cấp phát bộ nhớ động linh hoạt.',
+        cBest: 'O(1)',
+        cAvg: 'O(n)',
+        cWorst: 'O(n)',
+        cSpace: 'O(n)',
+        code: [
+          'public class Node {',
+          '    public int Data { get; set; }',
+          '    public Node Next { get; set; }',
+          '}',
+          'public void AddFirst(int value) {',
+          '    Node newNode = new Node(value);',
+          '    newNode.Next = head;',
+          '    head = newNode;',
+          '}'
+        ]
+      }
+    };
+
+    /* =========================================================
+       INITIALIZATION & TAB SWITCHING
+       ========================================================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      initAlgorithm('linear');
+    });
+
+    function switchAlgorithm(algoKey) {
+      if (isRunning) {
+        handleReset();
+      }
+      currentAlgo = algoKey;
+      document.querySelectorAll('.algo-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`tab-${algoKey}`).classList.add('active');
+      initAlgorithm(algoKey);
+    }
+
+    function initAlgorithm(algoKey) {
+      const meta = ALGO_METADATA[algoKey];
+      document.getElementById('algo-title').innerText = meta.title;
+      document.getElementById('algo-desc').innerText = meta.desc;
+      document.getElementById('c-best').innerText = meta.cBest;
+      document.getElementById('c-avg').innerText = meta.cAvg;
+      document.getElementById('c-worst').innerText = meta.cWorst;
+      document.getElementById('c-space').innerText = meta.cSpace;
+
+      renderCode(meta.code);
+      renderControls();
+      renderStage();
+      setExplanation('Sẵn sàng. Hãy nhập dữ liệu tùy ý hoặc sử dụng dữ liệu mặc định để bắt đầu quan sát.');
+      setStatus('Sẵn sàng', 'ready');
+    }
+
+    function renderCode(lines) {
+      const container = document.getElementById('code-container');
+      container.innerHTML = '';
+      lines.forEach((line, idx) => {
+        const div = document.createElement('div');
+        div.className = 'code-line';
+        div.id = `code-line-${idx}`;
+        div.textContent = `${(idx + 1).toString().padStart(2, ' ')}  ${line}`;
+        container.appendChild(div);
+      });
+    }
+
+    function highlightCodeLine(lineIdx) {
+      document.querySelectorAll('.code-line').forEach(el => el.classList.remove('active'));
+      if (lineIdx !== null && lineIdx !== undefined) {
+        const el = document.getElementById(`code-line-${lineIdx}`);
+        if (el) el.classList.add('active');
+      }
+    }
+
+    /* =========================================================
+       CONTROLS RENDERING
+       ========================================================= */
+    function renderControls() {
+      const container = document.getElementById('controls-input-container');
+      container.innerHTML = '';
+
+      if (currentAlgo === 'linear') {
+        container.innerHTML = `
+          <div class="form-group" style="flex: 2;">
+            <label for="input-array">Mảng số nguyên (phân cách bằng dấu phẩy):</label>
+            <input type="text" id="input-array" class="input-field" value="${arrayData.join(', ')}" onchange="updateArrayFromInput(this.value)">
+          </div>
+          <div class="form-group" style="flex: 1; max-width: 180px;">
+            <label for="input-target">Giá trị cần tìm (Target):</label>
+            <input type="number" id="input-target" class="input-field" value="${targetValue}" onchange="targetValue = parseInt(this.value) || 0">
+          </div>
+        `;
+      } else if (currentAlgo === 'binary') {
+        // Ensure array is sorted for binary search
+        arrayData.sort((a, b) => a - b);
+        container.innerHTML = `
+          <div class="form-group" style="flex: 2;">
+            <label for="input-array">Mảng số đã sắp xếp tăng dần:</label>
+            <input type="text" id="input-array" class="input-field" value="${arrayData.join(', ')}" onchange="updateArrayFromInput(this.value, true)">
+          </div>
+          <div class="form-group" style="flex: 1; max-width: 180px;">
+            <label for="input-target">Giá trị cần tìm (Target):</label>
+            <input type="number" id="input-target" class="input-field" value="${targetValue}" onchange="targetValue = parseInt(this.value) || 0">
+          </div>
+          <button class="btn btn-secondary" onclick="sortCurrentArray()" style="align-self: flex-end; margin-bottom: 2px;">
+            <span>📶</span> Sắp xếp mảng
+          </button>
+        `;
+      } else if (currentAlgo === 'bubble') {
+        container.innerHTML = `
+          <div class="form-group" style="flex: 2;">
+            <label for="input-array">Mảng số cần sắp xếp:</label>
+            <input type="text" id="input-array" class="input-field" value="${arrayData.join(', ')}" onchange="updateArrayFromInput(this.value)">
+          </div>
+        `;
+      } else if (currentAlgo === 'linkedlist') {
+        container.innerHTML = `
+          <div class="form-group" style="max-width: 160px;">
+            <label for="input-ll-val">Giá trị Node:</label>
+            <input type="number" id="input-ll-val" class="input-field" value="50">
+          </div>
+          <div class="btn-group" style="align-self: flex-end; margin-bottom: 2px;">
+            <button class="btn btn-emerald" onclick="llAddFirst()">+ Thêm Đầu (AddFirst)</button>
+            <button class="btn btn-primary" onclick="llAddLast()">+ Thêm Cuối (AddLast)</button>
+            <button class="btn btn-secondary" onclick="llDeleteHead()">- Xóa Đầu</button>
+            <button class="btn btn-secondary" onclick="llSearch()">🔍 Tìm Node</button>
+          </div>
+        `;
+      }
+    }
+
+    function updateArrayFromInput(str, forceSort = false) {
+      const parsed = str.split(',')
+        .map(x => parseInt(x.trim()))
+        .filter(x => !isNaN(x));
+
+      if (parsed.length > 0) {
+        arrayData = parsed.slice(0, 16); // Giới hạn tối đa 16 phần tử để hiển thị đẹp
+        if (forceSort) arrayData.sort((a, b) => a - b);
+        renderControls();
+        renderStage();
+        resetGenerator();
+      }
+    }
+
+    function sortCurrentArray() {
+      arrayData.sort((a, b) => a - b);
+      renderControls();
+      renderStage();
+      resetGenerator();
+      setExplanation('Đã sắp xếp mảng theo thứ tự tăng dần để sẵn sàng cho Tìm kiếm nhị phân.');
+    }
+
+    /* =========================================================
+       STAGE RENDERING
+       ========================================================= */
+    function renderStage() {
+      const container = document.getElementById('canvas-container');
+      container.innerHTML = '';
+
+      if (currentAlgo === 'linear' || currentAlgo === 'binary') {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'array-wrapper';
+
+        arrayData.forEach((val, idx) => {
+          const node = document.createElement('div');
+          node.className = 'array-node';
+          node.id = `array-node-${idx}`;
+
+          // Pointer Tag (Left / Mid / Right / Current)
+          const pointer = document.createElement('div');
+          pointer.className = 'pointer-tag';
+          pointer.id = `pointer-${idx}`;
+          pointer.style.display = 'none';
+
+          const box = document.createElement('div');
+          box.className = 'array-box';
+          box.id = `array-box-${idx}`;
+          box.innerText = val;
+
+          const idxLabel = document.createElement('div');
+          idxLabel.className = 'array-index';
+          idxLabel.innerText = `[${idx}]`;
+
+          node.appendChild(pointer);
+          node.appendChild(box);
+          node.appendChild(idxLabel);
+          wrapper.appendChild(node);
+        });
+
+        container.appendChild(wrapper);
+      } else if (currentAlgo === 'bubble') {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'array-wrapper';
+
+        const maxVal = Math.max(...arrayData, 10);
+        arrayData.forEach((val, idx) => {
+          const node = document.createElement('div');
+          node.className = 'array-node';
+          node.id = `array-node-${idx}`;
+
+          // Calculate height proportional to value
+          const barHeight = Math.max(40, Math.min(220, Math.round((val / maxVal) * 180) + 40));
+
+          const bar = document.createElement('div');
+          bar.className = 'array-bar';
+          bar.id = `array-bar-${idx}`;
+          bar.style.height = `${barHeight}px`;
+          bar.innerText = val;
+
+          const idxLabel = document.createElement('div');
+          idxLabel.className = 'array-index';
+          idxLabel.innerText = `[${idx}]`;
+
+          node.appendChild(bar);
+          node.appendChild(idxLabel);
+          wrapper.appendChild(node);
+        });
+
+        container.appendChild(wrapper);
+      } else if (currentAlgo === 'linkedlist') {
+        renderLinkedListStage();
+      }
+    }
+
+    function renderLinkedListStage() {
+      const container = document.getElementById('canvas-container');
+      container.innerHTML = '';
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'linked-list-wrapper';
+
+      linkedListData.forEach((node, idx) => {
+        const nodeContainer = document.createElement('div');
+        nodeContainer.className = 'll-node-container';
+        nodeContainer.id = `ll-node-${node.id}`;
+
+        const llNode = document.createElement('div');
+        llNode.className = 'll-node';
+        llNode.id = `ll-inner-${node.id}`;
+
+        const dataPart = document.createElement('div');
+        dataPart.className = 'll-node-data';
+        dataPart.innerText = node.value;
+
+        const nextPart = document.createElement('div');
+        nextPart.className = 'll-node-next';
+        nextPart.innerText = 'Next';
+
+        llNode.appendChild(dataPart);
+        llNode.appendChild(nextPart);
+
+        const arrow = document.createElement('div');
+        arrow.className = 'll-arrow';
+        arrow.innerText = '➔';
+
+        nodeContainer.appendChild(llNode);
+        nodeContainer.appendChild(arrow);
+        wrapper.appendChild(nodeContainer);
+      });
+
+      // Null Terminator
+      const nullBox = document.createElement('div');
+      nullBox.className = 'll-null';
+      nullBox.innerText = 'NULL';
+      wrapper.appendChild(nullBox);
+
+      container.appendChild(wrapper);
+    }
+
+    /* =========================================================
+       GENERATORS FOR STEP-BY-STEP EXECUTION
+       ========================================================= */
+
+    // 1. Linear Search Generator
+    function* linearSearchGenerator() {
+      highlightCodeLine(1);
+      yield {
+        msg: `Khởi tạo tìm kiếm: Mục tiêu cần tìm <strong>target = ${targetValue}</strong>. Duyệt tuần tự từ index 0 đến ${arrayData.length - 1}.`,
+        codeLine: 1
+      };
+
+      for (let i = 0; i < arrayData.length; i++) {
+        // Highlight current box
+        resetHighlights();
+        const box = document.getElementById(`array-box-${i}`);
+        if (box) box.classList.add('comparing');
+
+        highlightCodeLine(2);
+        yield {
+          msg: `Bước ${i + 1}: Kiểm tra phần tử tại index [${i}] có giá trị là <strong>${arrayData[i]}</strong> so với target <strong>${targetValue}</strong>.`,
+          codeLine: 2
+        };
+
+        if (arrayData[i] === targetValue) {
+          if (box) {
+            box.classList.remove('comparing');
+            box.classList.add('matched');
+          }
+          highlightCodeLine(3);
+          yield {
+            msg: `🎉 <strong>TÌM THẤY!</strong> Giá trị <strong>${targetValue}</strong> xuất hiện tại vị trí <code>Index = ${i}</code> sau <strong>${i + 1}</strong> lần so sánh.`,
+            found: true,
+            index: i,
+            codeLine: 3
+          };
+          return;
+        } else {
+          if (box) {
+            box.classList.remove('comparing');
+            box.classList.add('mismatch');
+          }
+          yield {
+            msg: `Giá trị ${arrayData[i]} ≠ ${targetValue}. Tiếp tục chuyển sang phần tử kế tiếp...`,
+            codeLine: 1
+          };
+        }
+      }
+
+      highlightCodeLine(6);
+      yield {
+        msg: `❌ <strong>KẾT THÚC:</strong> Đã duyệt qua toàn bộ mảng nhưng không tìm thấy giá trị <strong>${targetValue}</strong>. Trả về <code>-1</code>.`,
+        found: false,
+        codeLine: 6
+      };
+    }
+
+    // 2. Binary Search Generator
+    function* binarySearchGenerator() {
+      let left = 0;
+      let right = arrayData.length - 1;
+      let step = 0;
+
+      highlightCodeLine(1);
+      yield {
+        msg: `Khởi tạo: <code>left = 0</code>, <code>right = ${right}</code>. Target = <strong>${targetValue}</strong>.`,
+        codeLine: 1
+      };
+
+      while (left <= right) {
+        step++;
+        const mid = Math.floor((left + right) / 2);
+
+        // Update pointers & visuals
+        updateBinaryPointers(left, mid, right);
+        highlightCodeLine(3);
+
+        yield {
+          msg: `<strong>Vòng lặp ${step}:</strong> Tính vị trí giữa: <code>mid = Math.floor((${left} + ${right}) / 2) = ${mid}</code>. Giá trị <code>arr[${mid}] = ${arrayData[mid]}</code>.`,
+          codeLine: 3
+        };
+
+        const midBox = document.getElementById(`array-box-${mid}`);
+        if (midBox) midBox.classList.add('comparing');
+
+        highlightCodeLine(4);
+        if (arrayData[mid] === targetValue) {
+          if (midBox) {
+            midBox.classList.remove('comparing');
+            midBox.classList.add('matched');
+          }
+          yield {
+            msg: `🎉 <strong>TÌM THẤY!</strong> <code>arr[mid] == target</code> (${arrayData[mid]} == ${targetValue}) tại <code>Index = ${mid}</code> sau <strong>${step}</strong> lần chia đôi!`,
+            found: true,
+            codeLine: 4
+          };
+          return;
+        } else if (arrayData[mid] < targetValue) {
+          highlightCodeLine(5);
+          yield {
+            msg: `Vì <code>arr[mid] (${arrayData[mid]}) &lt; target (${targetValue})</code> ➔ Giá trị cần tìm chỉ có thể nằm ở nửa bên phải. Thu hẹp phạm vi: <code>left = mid + 1 = ${mid + 1}</code>.`,
+            codeLine: 5
+          };
+          // Eliminate left side
+          for (let k = left; k <= mid; k++) {
+            const el = document.getElementById(`array-box-${k}`);
+            if (el) el.classList.add('eliminated');
+          }
+          left = mid + 1;
+        } else {
+          highlightCodeLine(6);
+          yield {
+            msg: `Vì <code>arr[mid] (${arrayData[mid]}) &gt; target (${targetValue})</code> ➔ Giá trị cần tìm chỉ có thể nằm ở nửa bên trái. Thu hẹp phạm vi: <code>right = mid - 1 = ${mid - 1}</code>.`,
+            codeLine: 6
+          };
+          // Eliminate right side
+          for (let k = mid; k <= right; k++) {
+            const el = document.getElementById(`array-box-${k}`);
+            if (el) el.classList.add('eliminated');
+          }
+          right = mid - 1;
+        }
+      }
+
+      highlightCodeLine(8);
+      clearPointers();
+      yield {
+        msg: `❌ <strong>KẾT THÚC:</strong> Phạm vi <code>left (${left}) &gt; right (${right})</code> rỗng. Không tìm thấy giá trị <strong>${targetValue}</strong> trong mảng. Trả về <code>-1</code>.`,
+        found: false,
+        codeLine: 8
+      };
+    }
+
+    function updateBinaryPointers(l, m, r) {
+      clearPointers();
+      showPointer(l, 'Left', 'pointer-l');
+      showPointer(m, 'Mid', 'pointer-m');
+      showPointer(r, 'Right', 'pointer-r');
+    }
+
+    function showPointer(idx, text, cls) {
+      const p = document.getElementById(`pointer-${idx}`);
+      if (p) {
+        p.innerText = text;
+        p.className = `pointer-tag ${cls}`;
+        p.style.display = 'block';
+      }
+    }
+
+    function clearPointers() {
+      document.querySelectorAll('.pointer-tag').forEach(p => p.style.display = 'none');
+    }
+
+    // 3. Bubble Sort Generator
+    function* bubbleSortGenerator() {
+      const arr = [...arrayData];
+      const n = arr.length;
+      let totalComparisons = 0;
+      let totalSwaps = 0;
+
+      highlightCodeLine(2);
+      yield {
+        msg: `Bắt đầu thuật toán Sắp xếp nổi bọt trên mảng gồm <strong>${n}</strong> phần tử.`,
+        codeLine: 2
+      };
+
+      for (let i = 0; i < n - 1; i++) {
+        let swapped = false;
+        highlightCodeLine(3);
+        yield {
+          msg: `<strong>Lượt duyệt ${i + 1} (i = ${i}):</strong> Mục tiêu đưa phần tử lớn nhất trong đoạn chưa sắp xếp về vị trí index [${n - i - 1}].`,
+          codeLine: 3
+        };
+
+        for (let j = 0; j < n - i - 1; j++) {
+          totalComparisons++;
+          highlightCodeLine(5);
+
+          // Highlight 2 comparing bars
+          resetBarHighlights();
+          const bar1 = document.getElementById(`array-bar-${j}`);
+          const bar2 = document.getElementById(`array-bar-${j + 1}`);
+          if (bar1) bar1.classList.add('comparing');
+          if (bar2) bar2.classList.add('comparing');
+
+          yield {
+            msg: `So sánh cặp liền kề: <code>arr[${j}] = ${arr[j]}</code> và <code>arr[${j + 1}] = ${arr[j + 1]}</code>.`,
+            codeLine: 5
+          };
+
+          if (arr[j] > arr[j + 1]) {
+            // Swap in array
+            const temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+            swapped = true;
+            totalSwaps++;
+
+            // Swap visual bars
+            arrayData = [...arr];
+            renderStage();
+            
+            // Re-highlight after re-render
+            const nb1 = document.getElementById(`array-bar-${j}`);
+            const nb2 = document.getElementById(`array-bar-${j + 1}`);
+            if (nb1) nb1.classList.add('comparing');
+            if (nb2) nb2.classList.add('comparing');
+
+            highlightCodeLine(6);
+            yield {
+              msg: `Phát hiện <code>${arr[j + 1]} &gt; ${arr[j]}</code> sai thứ tự ➔ <strong>HOÁN ĐỔI (Swap)</strong> hai giá trị!`,
+              codeLine: 6
+            };
+          }
+        }
+
+        // Mark sorted element at end
+        const sortedBar = document.getElementById(`array-bar-${n - i - 1}`);
+        if (sortedBar) sortedBar.classList.add('sorted');
+
+        if (!swapped) {
+          highlightCodeLine(9);
+          yield {
+            msg: `✨ Không có sự hoán đổi nào trong suốt lượt duyệt ➔ <strong>Mảng đã hoàn toàn có thứ tự!</strong> Dừng thuật toán sớm nhờ cờ <code>swapped</code>.`,
+            codeLine: 9
+          };
+          break;
+        }
+      }
+
+      // Mark all sorted
+      document.querySelectorAll('.array-bar').forEach(b => b.classList.add('sorted'));
+      yield {
+        msg: `🎉 <strong>HOÀN TẤT SẮP XẾP:</strong> Tổng cộng <strong>${totalComparisons}</strong> lần so sánh, <strong>${totalSwaps}</strong> lần hoán đổi. Mảng đã tăng dần hoàn hảo!`,
+        codeLine: 11
+      };
+    }
+
+    function resetHighlights() {
+      document.querySelectorAll('.array-box').forEach(b => {
+        b.className = 'array-box';
+      });
+    }
+
+    function resetBarHighlights() {
+      document.querySelectorAll('.array-bar').forEach(b => {
+        if (!b.classList.contains('sorted')) {
+          b.classList.remove('comparing');
+        }
+      });
+    }
+
+    /* =========================================================
+       PLAYBACK ENGINE & STEP DISPATCHER
+       ========================================================= */
+    function resetGenerator() {
+      if (currentAlgo === 'linear') {
+        stepGenerator = linearSearchGenerator();
+      } else if (currentAlgo === 'binary') {
+        stepGenerator = binarySearchGenerator();
+      } else if (currentAlgo === 'bubble') {
+        stepGenerator = bubbleSortGenerator();
+      }
+      stepCount = 0;
+    }
+
+    function handlePlayPause() {
+      if (currentAlgo === 'linkedlist') {
+        setExplanation('Ở tab Danh sách liên kết, vui lòng sử dụng các nút tương tác trực tiếp (+ Thêm Đầu, + Thêm Cuối, Tìm Node) để trải nghiệm từng thao tác.');
+        return;
+      }
+
+      if (isRunning) {
+        // Pause
+        pauseSimulation();
+      } else {
+        // Start or Resume
+        playSimulation();
+      }
+    }
+
+    function playSimulation() {
+      if (!stepGenerator) {
+        resetGenerator();
+        renderStage();
+      }
+      isRunning = true;
+      setStatus('Đang chạy...', 'searching');
+      document.getElementById('play-icon').innerText = '⏸';
+      document.getElementById('play-text').innerText = 'Tạm dừng';
+      disableInputs(true);
+
+      runNextTick();
+    }
+
+    function pauseSimulation() {
+      isRunning = false;
+      clearTimeout(timerId);
+      setStatus('Đã tạm dừng', 'paused');
+      document.getElementById('play-icon').innerText = '▶';
+      document.getElementById('play-text').innerText = 'Tiếp tục';
+    }
+
+    function handleStep() {
+      if (currentAlgo === 'linkedlist') {
+        setExplanation('Dùng các nút tương tác trực tiếp ở thanh công cụ để thực hiện thao tác.');
+        return;
+      }
+
+      if (isRunning) {
+        pauseSimulation();
+      }
+
+      if (!stepGenerator) {
+        resetGenerator();
+        renderStage();
+      }
+
+      executeSingleStep();
+    }
+
+    function runNextTick() {
+      if (!isRunning) return;
+
+      const isCompleted = executeSingleStep();
+      if (!isCompleted) {
+        timerId = setTimeout(runNextTick, delayTime);
+      } else {
+        finishSimulation();
+      }
+    }
+
+    function executeSingleStep() {
+      const res = stepGenerator.next();
+      stepCount++;
+
+      if (!res.done) {
+        const data = res.value;
+        setExplanation(data.msg);
+        if (data.codeLine !== undefined) {
+          highlightCodeLine(data.codeLine);
+        }
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    function finishSimulation() {
+      isRunning = false;
+      clearTimeout(timerId);
+      setStatus('Hoàn tất', 'ready');
+      document.getElementById('play-icon').innerText = '▶';
+      document.getElementById('play-text').innerText = 'Chạy lại';
+      disableInputs(false);
+      stepGenerator = null;
+    }
+
+    function handleReset() {
+      isRunning = false;
+      clearTimeout(timerId);
+      setStatus('Đã đặt lại', 'ready');
+      document.getElementById('play-icon').innerText = '▶';
+      document.getElementById('play-text').innerText = 'Chạy mô phỏng';
+      disableInputs(false);
+
+      stepGenerator = null;
+      renderStage();
+      highlightCodeLine(null);
+      setExplanation('Đã đặt lại trạng thái ban đầu. Hãy bấm "Chạy mô phỏng" để bắt đầu.');
+    }
+
+    function handleRandomize() {
+      handleReset();
+      if (currentAlgo === 'linear' || currentAlgo === 'binary' || currentAlgo === 'bubble') {
+        const size = Math.floor(Math.random() * 4) + 6; // 6 to 9 items
+        const newArr = [];
+        for (let i = 0; i < size; i++) {
+          newArr.push(Math.floor(Math.random() * 90) + 5);
+        }
+        arrayData = newArr;
+        if (currentAlgo === 'binary') {
+          arrayData.sort((a, b) => a - b);
+        }
+        // Random target from array or nearby
+        if (Math.random() > 0.3) {
+          targetValue = arrayData[Math.floor(Math.random() * arrayData.length)];
+        } else {
+          targetValue = Math.floor(Math.random() * 100);
+        }
+
+        renderControls();
+        renderStage();
+        setExplanation(`Đã sinh mảng ngẫu nhiên mới: [${arrayData.join(', ')}]. Target = ${targetValue}.`);
+      } else if (currentAlgo === 'linkedlist') {
+        linkedListData = [
+          { id: nextNodeId++, value: Math.floor(Math.random() * 50) + 10 },
+          { id: nextNodeId++, value: Math.floor(Math.random() * 50) + 10 },
+          { id: nextNodeId++, value: Math.floor(Math.random() * 50) + 10 }
+        ];
+        renderStage();
+        setExplanation('Đã tạo danh sách liên kết ngẫu nhiên với 3 Node.');
+      }
+    }
+
+    function updateSpeed(val) {
+      delayTime = parseInt(val);
+      document.getElementById('speed-label').innerText = `${delayTime}ms`;
+    }
+
+    function setStatus(text, type) {
+      const dot = document.getElementById('status-dot');
+      const label = document.getElementById('status-text');
+      label.innerText = text;
+      dot.className = 'status-dot';
+      if (type === 'searching') dot.classList.add('searching');
+      if (type === 'ready') dot.classList.add('active');
+    }
+
+    function setExplanation(html) {
+      document.getElementById('explanation-box').innerHTML = `
+        <span class="explanation-step-num">Step ${stepCount}</span>
+        <div>${html}</div>
+      `;
+    }
+
+    function disableInputs(disabled) {
+      document.querySelectorAll('.input-field').forEach(inp => inp.disabled = disabled);
+      document.getElementById('btn-random').disabled = disabled;
+    }
+
+    /* =========================================================
+       LINKED LIST INTERACTIVE OPERATIONS
+       ========================================================= */
+    function llAddFirst() {
+      const inp = document.getElementById('input-ll-val');
+      const val = parseInt(inp.value) || Math.floor(Math.random() * 90) + 10;
+      
+      const newNode = { id: nextNodeId++, value: val };
+      linkedListData.unshift(newNode);
+      renderLinkedListStage();
+
+      // Highlight new head
+      const nodeEl = document.getElementById(`ll-inner-${newNode.id}`);
+      if (nodeEl) nodeEl.classList.add('found-node');
+      setTimeout(() => nodeEl && nodeEl.classList.remove('found-node'), 1200);
+
+      highlightCodeLine(4);
+      setExplanation(`<strong>Thêm vào đầu danh sách (AddFirst):</strong> Tạo Node mới mang giá trị <strong>${val}</strong>, cập nhật con trỏ <code>newNode.Next = head</code>, sau đó dời <code>head = newNode</code>. Độ phức tạp: <strong>O(1)</strong>.`);
+    }
+
+    function llAddLast() {
+      const inp = document.getElementById('input-ll-val');
+      const val = parseInt(inp.value) || Math.floor(Math.random() * 90) + 10;
+
+      const newNode = { id: nextNodeId++, value: val };
+      linkedListData.push(newNode);
+      renderLinkedListStage();
+
+      // Highlight new tail
+      const nodeEl = document.getElementById(`ll-inner-${newNode.id}`);
+      if (nodeEl) nodeEl.classList.add('found-node');
+      setTimeout(() => nodeEl && nodeEl.classList.remove('found-node'), 1200);
+
+      setExplanation(`<strong>Thêm vào cuối danh sách (AddLast):</strong> Tạo Node mới mang giá trị <strong>${val}</strong>, cập nhật con trỏ <code>tail.Next = newNode</code>, dời <code>tail = newNode</code>. Độ phức tạp: <strong>O(1)</strong> khi có con trỏ Tail.`);
+    }
+
+    function llDeleteHead() {
+      if (linkedListData.length === 0) {
+        setExplanation('Danh sách đang rỗng, không có Node nào để xóa!');
+        return;
+      }
+
+      const removed = linkedListData.shift();
+      renderLinkedListStage();
+      setExplanation(`<strong>Xóa đầu danh sách (DeleteHead):</strong> Đã xóa Node có giá trị <strong>${removed.value}</strong>. Con trỏ Head được trỏ tới <code>head.Next</code>. Độ phức tạp: <strong>O(1)</strong>.`);
+    }
+
+    async function llSearch() {
+      const inp = document.getElementById('input-ll-val');
+      const val = parseInt(inp.value);
+      if (isNaN(val)) return;
+
+      setExplanation(`<strong>Tìm kiếm Node (Search):</strong> Đang duyệt tuần tự từ Node đầu tiên (Head) để tìm Node có giá trị = <strong>${val}</strong>...`);
+
+      let found = false;
+      for (let i = 0; i < linkedListData.length; i++) {
+        const node = linkedListData[i];
+        const inner = document.getElementById(`ll-inner-${node.id}`);
+        if (inner) inner.classList.add('active-node');
+
+        await new Promise(r => setTimeout(r, 600));
+
+        if (node.value === val) {
+          if (inner) {
+            inner.classList.remove('active-node');
+            inner.classList.add('found-node');
+          }
+          setExplanation(`🎉 <strong>TÌM THẤY!</strong> Tìm thấy Node có giá trị <strong>${val}</strong> tại vị trí thứ <strong>${i + 1}</strong> trong danh sách liên kết!`);
+          found = true;
+          break;
+        } else {
+          if (inner) inner.classList.remove('active-node');
+        }
+      }
+
+      if (!found) {
+        setExplanation(`❌ Duyệt đến cuối danh sách (NULL) nhưng không tìm thấy Node nào mang giá trị <strong>${val}</strong>.`);
+      }
+    }
+  </script>
+</body>
+</html>
